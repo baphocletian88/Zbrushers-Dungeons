@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mentoría — Escultura Digital para Impresión 3D</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0d0c;
+    --bg2: #161513;
+    --bg3: #1e1c19;
+    --cream: #f0ead8;
+    --cream2: #c9bfa8;
+    --cream3: #7a7163;
+    --accent: #c8783a;
+    --accent2: #e89c5a;
+    --green: #4a8c6a;
+    --border: rgba(240,234,216,0.1);
+    --border2: rgba(240,234,216,0.18);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    opacity: 0.035;
+  }
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 0 6vw;
+    gap: 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::after {
+    content: '';
+    position: absolute; top: -20%; right: -10%;
+    width: 60vw; height: 60vw; border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,120,58,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .hero-label {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent2); font-weight: 500; margin-bottom: 2rem;
+  }
+  .hero-label::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent2); }
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.6rem, 4.5vw, 4.2rem);
+    line-height: 1.1; color: var(--cream); margin-bottom: 1.5rem;
+  }
+  .hero-title em { font-style: italic; color: var(--accent2); }
+  .hero-desc { font-size: 1.05rem; color: var(--cream2); max-width: 460px; margin-bottom: 2.5rem; line-height: 1.8; }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2.5rem; }
+  .tag { border: 1px solid var(--border2); border-radius: 2px; padding: 5px 14px; font-size: 12px; color: var(--cream2); letter-spacing: 0.04em; }
+  .cta-primary {
+    display: inline-block; background: var(--accent); color: var(--bg);
+    text-decoration: none; font-weight: 500; font-size: 14px;
+    letter-spacing: 0.06em; padding: 14px 36px; border-radius: 2px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .cta-primary:hover { background: var(--accent2); transform: translateY(-1px); }
+  .hero-visual { position: relative; display: flex; align-items: center; justify-content: center; }
+  .hero-card {
+    background: var(--bg3); border: 1px solid var(--border2);
+    border-radius: 4px; padding: 2rem; width: 100%; max-width: 380px; position: relative;
+  }
+  .hero-card::before {
+    content: ''; position: absolute; top: -1px; left: 40px; right: 40px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+  .prog-item { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--border); }
+  .prog-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .prog-num { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--accent); line-height: 1; min-width: 28px; }
+  .prog-info { flex: 1; }
+  .prog-title { font-size: 13px; font-weight: 500; color: var(--cream); margin-bottom: 2px; }
+  .prog-sub { font-size: 12px; color: var(--cream3); }
+  .prog-badge { font-size: 10px; background: rgba(200,120,58,0.15); color: var(--accent2); border: 1px solid rgba(200,120,58,0.3); border-radius: 2px; padding: 2px 7px; letter-spacing: 0.06em; white-space: nowrap; margin-top: 3px; display: inline-block; }
+  .section { position: relative; z-index: 1; padding: 7rem 6vw; border-bottom: 1px solid var(--border); }
+  .section-label { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream3); font-weight: 500; margin-bottom: 1rem; }
+  .section-label::before { content: ''; display: inline-block; width: 18px; height: 1px; background: var(--cream3); }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 3vw, 3rem); color: var(--cream); margin-bottom: 3.5rem; line-height: 1.2; }
+  .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+  .plan { background: var(--bg2); padding: 2.5rem 2rem; position: relative; transition: background 0.2s; }
+  .plan:hover { background: var(--bg3); }
+  .plan.featured { background: var(--bg3); }
+  .plan.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+  .plan-badge { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); border: 1px solid rgba(200,120,58,0.4); border-radius: 2px; padding: 3px 10px; margin-bottom: 1.2rem; }
+  .plan-name { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cream2); font-weight: 500; margin-bottom: 1.5rem; }
+  .plan-price { font-family: 'DM Serif Display', serif; font-size: 2.8rem; color: var(--cream); line-height: 1; }
+  .plan-price span { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 300; color: var(--cream3); }
+  .plan-per { font-size: 12px; color: var(--cream3); margin-top: 4px; margin-bottom: 2rem; }
+  .plan-features { list-style: none; }
+  .plan-features li { font-size: 13px; color: var(--cream2); padding: 8px 0; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .plan-features li::before { content: '—'; color: var(--accent); font-size: 12px; flex-shrink: 0; }
+  .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+  .process-n { font-family: 'DM Serif Display', serif; font-size: 4rem; color: rgba(200,120,58,0.25); line-height: 1; margin-bottom: 0.8rem; }
+  .process-title { font-size: 15px; font-weight: 500; color: var(--cream); margin-bottom: 0.5rem; }
+  .process-desc { font-size: 13px; color: var(--cream3); line-height: 1.7; }
+  .form-section { position: relative; z-index: 1; padding: 7rem 6vw; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
+  .form-section::before { content: ''; position: absolute; bottom: 0; left: 0; width: 40vw; height: 40vw; border-radius: 50%; background: radial-gradient(circle, rgba(74,140,106,0.08) 0%, transparent 65%); pointer-events: none; }
+  .form-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 3vw, 3rem); color: var(--cream); margin-bottom: 1rem; line-height: 1.2; }
+  .form-desc { font-size: 14px; color: var(--cream2); margin-bottom: 2.5rem; line-height: 1.8; }
+  .what-get { display: flex; flex-direction: column; gap: 1rem; }
+  .what-item { display: flex; gap: 14px; align-items: flex-start; }
+  .what-icon { width: 32px; height: 32px; border-radius: 2px; background: rgba(200,120,58,0.12); border: 1px solid rgba(200,120,58,0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+  .what-text { font-size: 13px; color: var(--cream2); line-height: 1.6; }
+  .what-text strong { color: var(--cream); font-weight: 500; display: block; margin-bottom: 2px; }
+  .form-box { background: var(--bg2); border: 1px solid var(--border2); border-radius: 4px; padding: 2.5rem; position: relative; }
+  .form-box::before { content: ''; position: absolute; top: -1px; left: 30px; right: 30px; height: 2px; background: linear-gradient(90deg, transparent, var(--green), transparent); }
+  .form-box h3 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--cream); margin-bottom: 0.3rem; }
+  .form-box p.form-sub { font-size: 13px; color: var(--cream3); margin-bottom: 2rem; }
+  .field { margin-bottom: 1.2rem; }
+  .field label { display: block; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream3); font-weight: 500; margin-bottom: 6px; }
+  .field input, .field select, .field textarea {
+    width: 100%; background: var(--bg3); border: 1px solid var(--border2);
+    border-radius: 2px; color: var(--cream); font-family: 'DM Sans', sans-serif;
+    font-size: 14px; font-weight: 300; padding: 10px 14px; outline: none;
+    transition: border-color 0.2s; -webkit-appearance: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
+  .field select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7163' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+  .field select option { background: #1e1c19; }
+  .field textarea { resize: vertical; min-height: 90px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .submit-btn { width: 100%; background: var(--accent); color: var(--bg); border: none; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; padding: 14px; cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 0.5rem; }
+  .submit-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .form-footer { font-size: 11px; color: var(--cream3); text-align: center; margin-top: 1rem; line-height: 1.6; }
+  .success-msg { display: none; text-align: center; padding: 2rem 1rem; }
+  .success-msg .check { width: 56px; height: 56px; border-radius: 50%; background: rgba(74,140,106,0.15); border: 1px solid var(--green); display: flex; align-items: center; justify-content: center; font-size: 22px; margin: 0 auto 1.2rem; }
+  .success-msg h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--cream); margin-bottom: 0.5rem; }
+  .success-msg p { font-size: 13px; color: var(--cream3); line-height: 1.7; }
+  .error-msg { display: none; background: rgba(200,60,60,0.1); border: 1px solid rgba(200,60,60,0.3); border-radius: 2px; padding: 12px 16px; font-size: 13px; color: #e88; margin-top: 1rem; text-align: center; }
+  footer { position: relative; z-index: 1; padding: 2.5rem 6vw; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  footer p { font-size: 12px; color: var(--cream3); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .fade { opacity: 0; animation: fadeUp 0.7s ease forwards; }
+  .fade:nth-child(2) { animation-delay: 0.1s; }
+  .fade:nth-child(3) { animation-delay: 0.2s; }
+  .fade:nth-child(4) { animation-delay: 0.3s; }
+  .fade:nth-child(5) { animation-delay: 0.4s; }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; padding: 5rem 6vw 4rem; gap: 3rem; }
+    .hero-visual { display: none; }
+    .plans-grid { grid-template-columns: 1fr; }
+    .process-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .form-section { grid-template-columns: 1fr; gap: 3rem; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div>
+    <p class="hero-label fade">Mentoría personalizada</p>
+    <h1 class="hero-title fade">Escultura digital<br>para <em>impresión 3D</em></h1>
+    <p class="hero-desc fade">Aprende a modelar en ZBrush con lógica de fabricación real. De la pantalla a la pieza física, sin errores costosos.</p>
+    <div class="hero-tags fade">
+      <span class="tag">ZBrush</span>
+      <span class="tag">Resina & FDM</span>
+      <span class="tag">Exportación STL</span>
+      <span class="tag">Impresión técnica</span>
+      <span class="tag">4–6 meses</span>
+    </div>
+    <a href="#inscripcion" class="cta-primary fade">Reservar mi lugar →</a>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-card">
+      <div class="prog-item"><div class="prog-num">1</div><div class="prog-info"><div class="prog-title">Fundamentos para impresión</div><div class="prog-sub">Escala real · Dynamesh · Unidades</div><div class="prog-badge">Sesiones 1–2</div></div></div>
+      <div class="prog-item"><div class="prog-num">2</div><div class="prog-info"><div class="prog-title">Volumen limpio y estructura</div><div class="prog-sub">Wall thickness · Sin agujeros</div><div class="prog-badge">Sesiones 3–4</div></div></div>
+      <div class="prog-item"><div class="prog-num">3</div><div class="prog-info"><div class="prog-title">Detalle funcional</div><div class="prog-sub">Subdivisiones · Resina vs FDM</div><div class="prog-badge">Sesiones 5–6</div></div></div>
+      <div class="prog-item"><div class="prog-num">4</div><div class="prog-info"><div class="prog-title">Separación de piezas</div><div class="prog-sub">Cortes · Keys · Ángulos</div><div class="prog-badge">Sesiones 7–8</div></div></div>
+      <div class="prog-item"><div class="prog-num">5</div><div class="prog-info"><div class="prog-title">Preparación técnica</div><div class="prog-sub">STL limpio · Decimation</div><div class="prog-badge">Sesiones 9–10</div></div></div>
+      <div class="prog-item"><div class="prog-num">6</div><div class="prog-info"><div class="prog-title">Validación real</div><div class="prog-sub">Slicer · Soportes · Impresión</div><div class="prog-badge">Sesiones 11–12</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">Inversión</p>
+  <h2 class="section-title">Planes de mentoría</h2>
+  <div class="plans-grid">
+    <div class="plan">
+      <div class="plan-name">Sesión suelta</div>
+      <div class="plan-price">$800 <span>MXN</span></div>
+      <div class="plan-per">por sesión única · 1.5 hrs</div>
+      <ul class="plan-features">
+        <li>Sin compromiso de continuidad</li>
+        <li>Revisión o corrección puntual</li>
+        <li>Feedback directo en archivo</li>
+      </ul>
+    </div>
+    <div class="plan featured">
+      <div class="plan-badge">Más elegido</div>
+      <div class="plan-name">Plan quincenal</div>
+      <div class="plan-price">$1,600 <span>MXN</span></div>
+      <div class="plan-per">por mes · 2 sesiones de 1.5 hrs</div>
+      <ul class="plan-features">
+        <li>$800 por sesión mantenido</li>
+        <li>Seguimiento continuo del progreso</li>
+        <li>Asignación clara entre sesiones</li>
+        <li>Acceso al programa de 6 etapas</li>
+      </ul>
+    </div>
+    <div class="plan">
+      <div class="plan-name">Plan comprometido</div>
+      <div class="plan-price">$2,400 <span>MXN</span></div>
+      <div class="plan-per">por mes · sesiones + revisión offline</div>
+      <ul class="plan-features">
+        <li>2 sesiones quincenales de 1.5 hrs</li>
+        <li>Revisión de archivos entre sesiones</li>
+        <li>Corrección de STL y errores reales</li>
+        <li>Diagnóstico técnico a profundidad</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-label">Cómo funciona</p>
+  <h2 class="section-title">Del formulario a tu primera sesión</h2>
+  <div class="process-grid">
+    <div class="process-item"><div class="process-n">01</div><div class="process-title">Llenas el formulario</div><div class="process-desc">Cuéntame tu nivel actual, qué quieres lograr y qué plan te interesa. Todo queda registrado automáticamente en Google Sheets.</div></div>
+    <div class="process-item"><div class="process-n">02</div><div class="process-title">Te contacto en 24–48 h</div><div class="process-desc">Revisamos tu solicitud y agendamos una llamada breve para confirmar el plan, horarios y comenzar.</div></div>
+    <div class="process-item"><div class="process-n">03</div><div class="process-title">Primera sesión</div><div class="process-desc">Diagnóstico de tu nivel actual, establecemos objetivos claros y arrancamos el programa personalizado.</div></div>
+  </div>
+</section>
+
+<section class="form-section" id="inscripcion">
+  <div class="form-left">
+    <p class="section-label">Inscripción</p>
+    <h2 class="form-title">Reserva<br>tu lugar</h2>
+    <p class="form-desc">Los lugares son limitados para garantizar atención personalizada. Completa el formulario y te confirmo disponibilidad en menos de 48 horas.</p>
+    <div class="what-get">
+      <div class="what-item"><div class="what-icon">◈</div><div class="what-text"><strong>Programa estructurado</strong>6 etapas progresivas, de cero a pieza lista para imprimir</div></div>
+      <div class="what-item"><div class="what-icon">◈</div><div class="what-text"><strong>Corrección real en archivo</strong>No teoría — trabajamos directo sobre tu modelo</div></div>
+      <div class="what-item"><div class="what-icon">◈</div><div class="what-text"><strong>Enfoque en fabricación</strong>Aprendes a esculpir para que funcione, no solo para que se vea bien</div></div>
+      <div class="what-item"><div class="what-icon">◈</div><div class="what-text"><strong>Evitas errores costosos</strong>Wall thickness, soportes, ángulos — cubiertos desde el inicio</div></div>
+    </div>
+  </div>
+
+  <div class="form-box">
+    <h3>Solicitud de inscripción</h3>
+    <p class="form-sub">Sin costo ni compromiso al enviar · Te respondo en 24–48 h</p>
+
+    <form id="regForm">
+      <div class="field-row">
+        <div class="field">
+          <label>Nombre</label>
+          <input type="text" id="f-nombre" placeholder="Tu nombre" required>
+        </div>
+        <div class="field">
+          <label>WhatsApp</label>
+          <input type="tel" id="f-whatsapp" placeholder="+52 81 0000 0000" required>
+        </div>
+      </div>
+      <div class="field">
+        <label>Correo electrónico</label>
+        <input type="email" id="f-correo" placeholder="tu@correo.com" required>
+      </div>
+      <div class="field">
+        <label>¿Qué plan te interesa?</label>
+        <select id="f-plan" required>
+          <option value="" disabled selected>Selecciona un plan</option>
+          <option>Sesión suelta — $800 MXN</option>
+          <option>Plan quincenal — $1,600/mes</option>
+          <option>Plan comprometido — $2,400/mes</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Nivel actual en ZBrush</label>
+        <select id="f-nivel" required>
+          <option value="" disabled selected>Selecciona tu nivel</option>
+          <option>Sin experiencia, partiendo de cero</option>
+          <option>Principiante — conozco la interfaz básica</option>
+          <option>Intermedio — he hecho modelos pero sin resultados para imprimir</option>
+          <option>Avanzado — busco optimizar para fabricación</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>¿Qué quieres lograr?</label>
+        <textarea id="f-objetivo" placeholder="Figuras coleccionables, piezas para venta, prototipos, hobby..."></textarea>
+      </div>
+      <div class="field">
+        <label>¿Tienes impresora 3D?</label>
+        <select id="f-impresora">
+          <option value="" disabled selected>Selecciona</option>
+          <option>Sí, de resina</option>
+          <option>Sí, FDM (filamento)</option>
+          <option>Sí, ambas</option>
+          <option>No, mando a imprimir</option>
+          <option>Todavía no tengo</option>
+        </select>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">Enviar solicitud →</button>
+      <div class="error-msg" id="errorMsg">Hubo un problema al enviar. Intenta de nuevo o escríbeme directo por WhatsApp.</div>
+    </form>
+
+    <div class="success-msg" id="successMsg">
+      <div class="check">✓</div>
+      <h3>¡Solicitud recibida!</h3>
+      <p>Te contactaré en menos de 48 horas para confirmar tu lugar y coordinar la primera sesión. Revisa tu correo y WhatsApp.</p>
+    </div>
+
+    <p class="form-footer">Tus datos se usan únicamente para contactarte.<br>Sin spam, sin listas de correo.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Mentoría — Escultura Digital para Impresión 3D</p>
+  <p>Monterrey, MX · Sesiones vía Zoom / Google Meet</p>
+</footer>
+
+<script>
+  // ══════════════════════════════════════════════════
+  // REEMPLAZA ESTA URL con la de tu Apps Script
+  // (la obtienes en Paso 3 de las instrucciones)
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbye3Hn-YBUaRE1ICF9JfnGE8mruTO2tfVGrtMIE11iUK5isnFzAT8cPiaFQYQ_nodhs/exec";
+  // ══════════════════════════════════════════════════
+
+  document.getElementById('regForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('submitBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    errorMsg.style.display = 'none';
+
+    const payload = {
+      nombre:    document.getElementById('f-nombre').value,
+      whatsapp:  document.getElementById('f-whatsapp').value,
+      correo:    document.getElementById('f-correo').value,
+      plan:      document.getElementById('f-plan').value,
+      nivel:     document.getElementById('f-nivel').value,
+      objetivo:  document.getElementById('f-objetivo').value,
+      impresora: document.getElementById('f-impresora').value,
+    };
+
+    try {
+      const res = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+
+      if (data.result === 'ok') {
+        document.getElementById('regForm').style.display = 'none';
+        document.getElementById('successMsg').style.display = 'block';
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = 'Enviar solicitud →';
+      errorMsg.style.display = 'block';
+      console.error(err);
+    }
+  });
+</script>
+</body>
+</html>
