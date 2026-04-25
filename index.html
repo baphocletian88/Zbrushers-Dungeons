@@ -3,375 +3,741 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mentoría — Escultura Digital para Impresión 3D</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Tabulador v2 — Modelado Digital Custom · Monterrey</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Syne:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0e0d0c;
-    --bg2: #161513;
-    --bg3: #1e1c19;
-    --cream: #f0ead8;
-    --cream2: #c9bfa8;
-    --cream3: #7a7163;
-    --accent: #c8783a;
-    --accent2: #e89c5a;
-    --green: #4a8c6a;
-    --border: rgba(240,234,216,0.1);
-    --border2: rgba(240,234,216,0.18);
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--cream);
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 300;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-  body::before {
-    content: '';
-    position: fixed; inset: 0; pointer-events: none; z-index: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-    opacity: 0.035;
-  }
-  .hero {
-    position: relative; z-index: 1;
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding: 0 6vw;
-    gap: 4rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .hero::after {
-    content: '';
-    position: absolute; top: -20%; right: -10%;
-    width: 60vw; height: 60vw; border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,120,58,0.12) 0%, transparent 65%);
-    pointer-events: none;
-  }
-  .hero-label {
-    display: inline-flex; align-items: center; gap: 8px;
-    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--accent2); font-weight: 500; margin-bottom: 2rem;
-  }
-  .hero-label::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--accent2); }
-  .hero-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(2.6rem, 4.5vw, 4.2rem);
-    line-height: 1.1; color: var(--cream); margin-bottom: 1.5rem;
-  }
-  .hero-title em { font-style: italic; color: var(--accent2); }
-  .hero-desc { font-size: 1.05rem; color: var(--cream2); max-width: 460px; margin-bottom: 2.5rem; line-height: 1.8; }
-  .hero-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2.5rem; }
-  .tag { border: 1px solid var(--border2); border-radius: 2px; padding: 5px 14px; font-size: 12px; color: var(--cream2); letter-spacing: 0.04em; }
-  .cta-primary {
-    display: inline-block; background: var(--accent); color: var(--bg);
-    text-decoration: none; font-weight: 500; font-size: 14px;
-    letter-spacing: 0.06em; padding: 14px 36px; border-radius: 2px;
-    transition: background 0.2s, transform 0.15s;
-  }
-  .cta-primary:hover { background: var(--accent2); transform: translateY(-1px); }
-  .hero-visual { position: relative; display: flex; align-items: center; justify-content: center; }
-  .hero-card {
-    background: var(--bg3); border: 1px solid var(--border2);
-    border-radius: 4px; padding: 2rem; width: 100%; max-width: 380px; position: relative;
-  }
-  .hero-card::before {
-    content: ''; position: absolute; top: -1px; left: 40px; right: 40px; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  }
-  .prog-item { display: flex; gap: 14px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid var(--border); }
-  .prog-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .prog-num { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--accent); line-height: 1; min-width: 28px; }
-  .prog-info { flex: 1; }
-  .prog-title { font-size: 13px; font-weight: 500; color: var(--cream); margin-bottom: 2px; }
-  .prog-sub { font-size: 12px; color: var(--cream3); }
-  .prog-badge { font-size: 10px; background: rgba(200,120,58,0.15); color: var(--accent2); border: 1px solid rgba(200,120,58,0.3); border-radius: 2px; padding: 2px 7px; letter-spacing: 0.06em; white-space: nowrap; margin-top: 3px; display: inline-block; }
-  .section { position: relative; z-index: 1; padding: 7rem 6vw; border-bottom: 1px solid var(--border); }
-  .section-label { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cream3); font-weight: 500; margin-bottom: 1rem; }
-  .section-label::before { content: ''; display: inline-block; width: 18px; height: 1px; background: var(--cream3); }
-  .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 3vw, 3rem); color: var(--cream); margin-bottom: 3.5rem; line-height: 1.2; }
-  .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
-  .plan { background: var(--bg2); padding: 2.5rem 2rem; position: relative; transition: background 0.2s; }
-  .plan:hover { background: var(--bg3); }
-  .plan.featured { background: var(--bg3); }
-  .plan.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
-  .plan-badge { display: inline-block; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent2); border: 1px solid rgba(200,120,58,0.4); border-radius: 2px; padding: 3px 10px; margin-bottom: 1.2rem; }
-  .plan-name { font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--cream2); font-weight: 500; margin-bottom: 1.5rem; }
-  .plan-price { font-family: 'DM Serif Display', serif; font-size: 2.8rem; color: var(--cream); line-height: 1; }
-  .plan-price span { font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 300; color: var(--cream3); }
-  .plan-per { font-size: 12px; color: var(--cream3); margin-top: 4px; margin-bottom: 2rem; }
-  .plan-features { list-style: none; }
-  .plan-features li { font-size: 13px; color: var(--cream2); padding: 8px 0; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
-  .plan-features li::before { content: '—'; color: var(--accent); font-size: 12px; flex-shrink: 0; }
-  .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
-  .process-n { font-family: 'DM Serif Display', serif; font-size: 4rem; color: rgba(200,120,58,0.25); line-height: 1; margin-bottom: 0.8rem; }
-  .process-title { font-size: 15px; font-weight: 500; color: var(--cream); margin-bottom: 0.5rem; }
-  .process-desc { font-size: 13px; color: var(--cream3); line-height: 1.7; }
-  .form-section { position: relative; z-index: 1; padding: 7rem 6vw; display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: start; }
-  .form-section::before { content: ''; position: absolute; bottom: 0; left: 0; width: 40vw; height: 40vw; border-radius: 50%; background: radial-gradient(circle, rgba(74,140,106,0.08) 0%, transparent 65%); pointer-events: none; }
-  .form-title { font-family: 'DM Serif Display', serif; font-size: clamp(2rem, 3vw, 3rem); color: var(--cream); margin-bottom: 1rem; line-height: 1.2; }
-  .form-desc { font-size: 14px; color: var(--cream2); margin-bottom: 2.5rem; line-height: 1.8; }
-  .what-get { display: flex; flex-direction: column; gap: 1rem; }
-  .what-item { display: flex; gap: 14px; align-items: flex-start; }
-  .what-icon { width: 32px; height: 32px; border-radius: 2px; background: rgba(200,120,58,0.12); border: 1px solid rgba(200,120,58,0.25); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
-  .what-text { font-size: 13px; color: var(--cream2); line-height: 1.6; }
-  .what-text strong { color: var(--cream); font-weight: 500; display: block; margin-bottom: 2px; }
-  .form-box { background: var(--bg2); border: 1px solid var(--border2); border-radius: 4px; padding: 2.5rem; position: relative; }
-  .form-box::before { content: ''; position: absolute; top: -1px; left: 30px; right: 30px; height: 2px; background: linear-gradient(90deg, transparent, var(--green), transparent); }
-  .form-box h3 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--cream); margin-bottom: 0.3rem; }
-  .form-box p.form-sub { font-size: 13px; color: var(--cream3); margin-bottom: 2rem; }
-  .field { margin-bottom: 1.2rem; }
-  .field label { display: block; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cream3); font-weight: 500; margin-bottom: 6px; }
-  .field input, .field select, .field textarea {
-    width: 100%; background: var(--bg3); border: 1px solid var(--border2);
-    border-radius: 2px; color: var(--cream); font-family: 'DM Sans', sans-serif;
-    font-size: 14px; font-weight: 300; padding: 10px 14px; outline: none;
-    transition: border-color 0.2s; -webkit-appearance: none;
-  }
-  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
-  .field select { cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7163' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
-  .field select option { background: #1e1c19; }
-  .field textarea { resize: vertical; min-height: 90px; }
-  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .submit-btn { width: 100%; background: var(--accent); color: var(--bg); border: none; border-radius: 2px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; letter-spacing: 0.06em; padding: 14px; cursor: pointer; transition: background 0.2s, transform 0.15s; margin-top: 0.5rem; }
-  .submit-btn:hover { background: var(--accent2); transform: translateY(-1px); }
-  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-  .form-footer { font-size: 11px; color: var(--cream3); text-align: center; margin-top: 1rem; line-height: 1.6; }
-  .success-msg { display: none; text-align: center; padding: 2rem 1rem; }
-  .success-msg .check { width: 56px; height: 56px; border-radius: 50%; background: rgba(74,140,106,0.15); border: 1px solid var(--green); display: flex; align-items: center; justify-content: center; font-size: 22px; margin: 0 auto 1.2rem; }
-  .success-msg h3 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--cream); margin-bottom: 0.5rem; }
-  .success-msg p { font-size: 13px; color: var(--cream3); line-height: 1.7; }
-  .error-msg { display: none; background: rgba(200,60,60,0.1); border: 1px solid rgba(200,60,60,0.3); border-radius: 2px; padding: 12px 16px; font-size: 13px; color: #e88; margin-top: 1rem; text-align: center; }
-  footer { position: relative; z-index: 1; padding: 2.5rem 6vw; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-  footer p { font-size: 12px; color: var(--cream3); }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-  .fade { opacity: 0; animation: fadeUp 0.7s ease forwards; }
-  .fade:nth-child(2) { animation-delay: 0.1s; }
-  .fade:nth-child(3) { animation-delay: 0.2s; }
-  .fade:nth-child(4) { animation-delay: 0.3s; }
-  .fade:nth-child(5) { animation-delay: 0.4s; }
-  @media (max-width: 860px) {
-    .hero { grid-template-columns: 1fr; min-height: auto; padding: 5rem 6vw 4rem; gap: 3rem; }
-    .hero-visual { display: none; }
-    .plans-grid { grid-template-columns: 1fr; }
-    .process-grid { grid-template-columns: 1fr; gap: 2rem; }
-    .form-section { grid-template-columns: 1fr; gap: 3rem; }
-  }
+:root {
+  --bg:     #050408;
+  --bg2:    #0d0b12;
+  --bg3:    #16131f;
+  --bg4:    #211e2e;
+  --ink:    #f0ecfa;
+  --ink2:   #c2bad8;
+  --ink3:   #7a7190;
+  --a1:     #c8783a;
+  --a2:     #f0a060;
+  --gold:   #d4a84b;
+  --gold2:  #f5d070;
+  --green:  #3d7a5a;
+  --red:    #8c3a3a;
+  --border: rgba(200,120,58,.18);
+  --border2:rgba(200,120,58,.35);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:'Syne',sans-serif;font-weight:300;
+  line-height:1.7;overflow-x:hidden;
+}
+
+/* GRAIN */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:200;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity:.032;mix-blend-mode:overlay;
+}
+
+/* ORBS */
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(90px);}
+.o1{width:55vw;height:55vw;top:-20vw;right:-15vw;background:radial-gradient(circle,rgba(200,120,58,.14),transparent 65%)}
+.o2{width:40vw;height:40vw;bottom:10vh;left:-12vw;background:radial-gradient(circle,rgba(100,60,180,.1),transparent 65%)}
+.o3{width:28vw;height:28vw;top:55vh;left:38vw;background:radial-gradient(circle,rgba(212,168,75,.07),transparent 65%)}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:1rem 5vw;display:flex;align-items:center;justify-content:space-between;
+  background:rgba(9,8,11,.72);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1rem;font-weight:400;letter-spacing:.06em;color:var(--ink)}
+.nav-logo span{font-style:italic;color:var(--a2)}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{color:var(--ink3);text-decoration:none;font-size:12px;letter-spacing:.1em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--a2)}
+.nav-cta{
+  border:1px solid var(--border2);color:var(--a2);text-decoration:none;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  padding:8px 20px;border-radius:2px;transition:all .2s;
+}
+.nav-cta:hover{background:var(--a1);color:var(--bg);border-color:var(--a1)}
+
+/* HERO */
+.hero{
+  position:relative;z-index:1;min-height:100vh;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 5vw 5rem;border-bottom:1px solid var(--border);overflow:hidden;
+}
+.hero-ghost{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:clamp(6rem,16vw,16rem);font-weight:700;
+  color:transparent;-webkit-text-stroke:1px rgba(200,120,58,.07);
+  white-space:nowrap;user-select:none;pointer-events:none;letter-spacing:-.02em;
+}
+.hero-pill{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--a2);margin-bottom:1.5rem;
+}
+.hero-pill::before{content:'';width:28px;height:1px;background:var(--a2)}
+.hero-h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(3rem,6.5vw,6.5rem);font-weight:400;line-height:1.05;
+  color:var(--ink);margin-bottom:2rem;max-width:820px;
+}
+.hero-h1 em{font-style:italic;color:var(--a2)}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.hero-desc{font-size:15px;color:var(--ink2);max-width:520px;line-height:1.85}
+.hero-badges{display:flex;gap:2.5rem}
+.badge-item{text-align:right}
+.badge-num{
+  font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:400;
+  color:var(--a2);line-height:1;
+}
+.badge-lbl{font-size:10px;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;margin-top:3px}
+
+/* SOBRE MÍ */
+.about-bar{
+  position:relative;z-index:1;
+  background:rgba(0,0,0,.6);
+  border-bottom:1px solid var(--border);
+  padding:2rem 5vw;
+}
+.about-inner{
+  display:flex;align-items:center;gap:2rem;flex-wrap:wrap;
+  max-width:1100px;
+}
+.about-avatar{
+  width:64px;height:64px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(200,120,58,.3),rgba(212,168,75,.2));
+  border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:1.3rem;
+  color:var(--a2);font-style:italic;letter-spacing:.05em;
+}
+.about-body{flex:1;min-width:260px}
+.about-name{
+  font-family:'Playfair Display',serif;font-size:1.15rem;
+  color:var(--ink);font-weight:400;margin-bottom:2px;
+}
+.about-role{
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--a2);margin-bottom:.6rem;
+}
+.about-bio{
+  font-size:13px;color:var(--ink2);line-height:1.7;
+}
+.about-bio strong{color:var(--ink);font-weight:500}
+.about-stats{
+  display:flex;gap:2rem;flex-shrink:0;
+  border-left:1px solid var(--border);padding-left:2rem;
+}
+.astat{display:flex;flex-direction:column;align-items:center;gap:2px}
+.astat-n{
+  font-family:'Playfair Display',serif;font-size:1.6rem;
+  color:var(--gold2);font-weight:400;line-height:1;
+}
+.astat-l{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.1em;text-align:center}
+
+/* ALERTA GLOBAL */
+.alert-bar{
+  position:relative;z-index:1;
+  background:rgba(212,168,75,.08);
+  border-top:1px solid rgba(212,168,75,.2);
+  border-bottom:1px solid rgba(212,168,75,.2);
+  padding:1rem 5vw;display:flex;align-items:center;gap:12px;
+}
+.alert-bar .icon{font-size:16px;flex-shrink:0}
+.alert-bar p{font-size:13px;color:var(--gold2);line-height:1.6}
+.alert-bar strong{color:var(--gold);font-weight:500}
+
+/* SECTION */
+.section{position:relative;z-index:1;padding:5rem 5vw;border-bottom:1px solid var(--border)}
+.sec-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:.8rem;
+}
+.sec-eyebrow::before{content:'';width:14px;height:1px;background:var(--ink3)}
+.sec-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,3.5vw,3.2rem);font-weight:400;
+  color:var(--ink);line-height:1.15;margin-bottom:2.5rem;
+}
+.sec-title em{font-style:italic;color:var(--a2)}
+
+/* RANGOS */
+.rangos{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:2rem}
+.rango{background:rgba(0,0,0,.55);padding:1.8rem 1.5rem;position:relative;transition:background .2s}
+.rango:hover{background:rgba(255,255,255,.04)}
+.rango.mid{background:rgba(200,120,58,.08)}
+.rango.top{background:rgba(212,168,75,.06)}
+.rango.mid::before,.rango.top::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.rango.mid::before{background:linear-gradient(90deg,transparent,var(--a1),transparent)}
+.rango.top::before{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.rango-tag{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--a2);margin-bottom:.5rem;font-weight:500}
+.rango-name{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:var(--ink);margin-bottom:.4rem}
+.rango-price{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold2);font-weight:400;line-height:1;margin-bottom:.8rem}
+.rango-desc{font-size:12.5px;color:var(--ink2);line-height:1.7}
+
+/* TABLA DE SERVICIOS */
+.cat-label{
+  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--a1);font-weight:500;margin:2.5rem 0 .6rem;
+  display:flex;align-items:center;gap:10px;
+}
+.cat-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent)}
+.srv-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:.5rem}
+.srv-table thead tr{background:rgba(200,120,58,.13);border-bottom:1px solid var(--a1)}
+.srv-table thead th{
+  padding:9px 14px;text-align:left;font-size:10px;font-weight:500;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--a2);
+}
+.srv-table thead th.c{text-align:center}
+.srv-table tbody tr{border-bottom:1px solid rgba(200,120,58,.1);transition:background .15s}
+.srv-table tbody tr:hover{background:rgba(240,160,96,.07)}
+.srv-table tbody tr:nth-child(even){background:rgba(255,255,255,.035)}
+.srv-table tbody tr:nth-child(odd){background:rgba(0,0,0,.25)}
+.srv-table td{padding:10px 14px;color:var(--ink2);vertical-align:middle}
+.srv-table td.price{text-align:center;font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--gold2);font-weight:400;white-space:nowrap}
+.srv-table td.time{text-align:center;color:var(--a2);font-size:12px;white-space:nowrap;font-weight:500}
+.srv-table td.inc{font-size:11.5px;color:var(--ink3)}
+.srv-table td.name{color:var(--ink);font-weight:400}
+
+/* NOTA INLINE */
+.note{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 14px;border-radius:2px;font-size:12px;line-height:1.6;
+  margin:8px 0;
+}
+.note.warn{background:rgba(212,168,75,.07);border-left:2px solid var(--gold);color:var(--gold2)}
+.note.ok{background:rgba(61,122,90,.08);border-left:2px solid var(--green);color:#7ec9a0}
+.note.info{background:rgba(200,120,58,.06);border-left:2px solid var(--a1);color:var(--ink2)}
+
+/* PRECIOS MÍNIMOS */
+.min-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-top:1.5rem}
+.min-item{background:rgba(0,0,0,.5);padding:1.2rem 1rem;text-align:center}
+.min-cat{font-size:11px;color:var(--ink2);margin-bottom:.4rem;line-height:1.4}
+.min-price{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gold2);font-weight:400}
+
+/* PROCESO */
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:0;position:relative}
+.steps::before{
+  content:'';position:absolute;top:28px;left:calc(100%/12);right:calc(100%/12);
+  height:1px;background:linear-gradient(90deg,transparent,var(--border2),var(--border2),transparent);
+  z-index:0;
+}
+.step{position:relative;z-index:1;text-align:center;padding:0 1rem}
+.step-num{
+  width:56px;height:56px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--a2);
+  margin:0 auto 1rem;position:relative;
+}
+.step-num::after{
+  content:'';position:absolute;inset:-4px;border-radius:50%;
+  border:1px solid rgba(200,120,58,.1);
+}
+.step-title{font-size:12px;font-weight:500;color:var(--ink);margin-bottom:.3rem;letter-spacing:.03em}
+.step-desc{font-size:11px;color:var(--ink3);line-height:1.5}
+
+/* CONDICIONES */
+.conds{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden}
+.cond-item{background:rgba(0,0,0,.45);padding:1.2rem 1.4rem;display:flex;gap:12px;transition:background .2s}
+.cond-item:hover{background:rgba(200,120,58,.06)}
+.cond-icon{font-size:16px;flex-shrink:0;margin-top:2px}
+.cond-body{}
+.cond-title{font-size:12.5px;font-weight:500;color:var(--a2);margin-bottom:4px;letter-spacing:.04em}
+.cond-text{font-size:12px;color:var(--ink2);line-height:1.65}
+
+/* FORM SECTION */
+.form-wrap{
+  display:grid;grid-template-columns:1fr 1.05fr;gap:5rem;align-items:start;
+  position:relative;z-index:1;padding:5rem 5vw;
+}
+.form-left-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,3.5vw,3.2rem);font-weight:400;
+  color:var(--ink);line-height:1.15;margin-bottom:1rem;
+}
+.form-left-title em{font-style:italic;color:var(--a2)}
+.form-left-desc{font-size:14px;color:var(--ink2);line-height:1.85;margin-bottom:2rem}
+.checklist{display:flex;flex-direction:column;gap:.9rem}
+.check-item{display:flex;gap:12px;align-items:flex-start}
+.check-icon{
+  width:28px;height:28px;border-radius:2px;flex-shrink:0;
+  background:rgba(200,120,58,.1);border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;font-size:12px;margin-top:1px;
+}
+.check-text{font-size:13px;color:var(--ink2);line-height:1.6}
+.check-text strong{color:var(--ink);font-weight:500;display:block;margin-bottom:1px}
+
+/* FORM BOX */
+.form-box{
+  background:rgba(0,0,0,.55);border:1px solid var(--border2);
+  border-radius:4px;padding:2.2rem;position:relative;
+}
+.form-box::before{
+  content:'';position:absolute;top:-1px;left:24px;right:24px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--a1),transparent);
+}
+.form-box h3{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:400;color:var(--ink);margin-bottom:.25rem}
+.form-sub{font-size:12px;color:var(--ink3);margin-bottom:1.8rem}
+.field{margin-bottom:1rem}
+.field label{display:block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);font-weight:500;margin-bottom:5px}
+.field input,.field select,.field textarea{
+  width:100%;background:rgba(0,0,0,.5);
+  border:1px solid rgba(200,120,58,.25);border-radius:2px;
+  color:var(--ink);font-family:'Syne',sans-serif;font-size:13px;font-weight:300;
+  padding:9px 12px;outline:none;transition:border-color .2s;-webkit-appearance:none;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--a1)}
+.field select{
+  cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%236b6380' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px;
+}
+.field select option{background:#17151d}
+.field textarea{resize:vertical;min-height:90px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.submit-btn{
+  width:100%;background:var(--a1);color:var(--bg);border:none;border-radius:2px;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:500;
+  letter-spacing:.08em;text-transform:uppercase;padding:13px;
+  cursor:pointer;transition:background .2s,transform .15s;margin-top:.4rem;
+}
+.submit-btn:hover{background:var(--a2);transform:translateY(-1px)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.form-privacy{font-size:10px;color:var(--ink3);text-align:center;margin-top:.8rem;line-height:1.6}
+.error-msg{
+  display:none;background:rgba(140,58,58,.12);border:1px solid rgba(140,58,58,.3);
+  border-radius:2px;padding:10px 14px;font-size:12px;color:#e88;margin-top:.8rem;text-align:center;
+}
+.success-msg{display:none;text-align:center;padding:2rem 1rem}
+.success-check{
+  width:52px;height:52px;border-radius:50%;
+  background:rgba(61,122,90,.15);border:1px solid var(--green);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+  margin:0 auto 1rem;
+}
+.success-msg h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--ink);margin-bottom:.5rem}
+.success-msg p{font-size:12px;color:var(--ink3);line-height:1.7}
+
+/* FOOTER */
+footer{
+  position:relative;z-index:1;padding:1.8rem 5vw;
+  border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;
+}
+footer p{font-size:11px;color:var(--ink3)}
+footer a{color:var(--a2);text-decoration:none;font-size:11px}
+
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.fade{opacity:0;animation:fadeUp .75s ease forwards}
+.d1{animation-delay:.1s}.d2{animation-delay:.22s}.d3{animation-delay:.34s}.d4{animation-delay:.46s}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .hero-badges{display:none}
+  .rangos{grid-template-columns:1fr}
+  .steps{grid-template-columns:repeat(3,1fr);gap:2rem}
+  .steps::before{display:none}
+  .conds{grid-template-columns:1fr}
+  .form-wrap{grid-template-columns:1fr;gap:3rem}
+  .min-grid{grid-template-columns:repeat(2,1fr)}
+  .srv-table td.inc,.srv-table th.inc-h{display:none}
+}
 </style>
 </head>
 <body>
 
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Escultura <span>& Modelado 3D</span></div>
+  <div class="nav-links">
+    <a href="#tabulador">Tabulador</a>
+    <a href="#proceso">Proceso</a>
+    <a href="#condiciones">Condiciones</a>
+    <a href="#cotizar">Cotizar</a>
+  </div>
+  <a href="#cotizar" class="nav-cta">Solicitar cotización →</a>
+</nav>
+
+<!-- HERO -->
 <section class="hero">
+  <div class="hero-ghost">Custom</div>
   <div>
-    <p class="hero-label fade">Mentoría personalizada</p>
-    <h1 class="hero-title fade">Escultura digital<br>para <em>impresión 3D</em></h1>
-    <p class="hero-desc fade">Aprende a esculpir en ZBrush con lógica de fabricación real. De la pantalla a la pieza física, sin errores costosos.</p>
-    <div class="hero-tags fade">
-      <span class="tag">ZBrush</span>
-      <span class="tag">Resina & FDM</span>
-      <span class="tag">Exportación STL</span>
-      <span class="tag">Impresión técnica</span>
-      <span class="tag">4–6 meses</span>
-    </div>
-    <a href="#inscripcion" class="cta-primary fade">Reservar mi lugar →</a>
-  </div>
-  <div class="hero-visual">
-    <div class="hero-card">
-      <div class="prog-item"><div class="prog-num">1</div><div class="prog-info"><div class="prog-title">Fundamentos para impresión</div><div class="prog-sub">Escala real · Dynamesh · Unidades</div><div class="prog-badge">Sesiones 1–2</div></div></div>
-      <div class="prog-item"><div class="prog-num">2</div><div class="prog-info"><div class="prog-title">Volumen limpio y estructura</div><div class="prog-sub">Wall thickness · Sin agujeros</div><div class="prog-badge">Sesiones 3–4</div></div></div>
-      <div class="prog-item"><div class="prog-num">3</div><div class="prog-info"><div class="prog-title">Detalle funcional</div><div class="prog-sub">Subdivisiones · Resina vs FDM</div><div class="prog-badge">Sesiones 5–6</div></div></div>
-      <div class="prog-item"><div class="prog-num">4</div><div class="prog-info"><div class="prog-title">Separación de piezas</div><div class="prog-sub">Cortes · Keys · Ángulos</div><div class="prog-badge">Sesiones 7–8</div></div></div>
-      <div class="prog-item"><div class="prog-num">5</div><div class="prog-info"><div class="prog-title">Preparación técnica</div><div class="prog-sub">STL limpio · Decimation</div><div class="prog-badge">Sesiones 9–10</div></div></div>
-      <div class="prog-item"><div class="prog-num">6</div><div class="prog-info"><div class="prog-title">Validación real</div><div class="prog-sub">Slicer · Soportes · Impresión</div><div class="prog-badge">Sesiones 11–12</div></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <p class="section-label">Inversión</p>
-  <h2 class="section-title">Planes de mentoría</h2>
-  <div class="plans-grid">
-    <div class="plan">
-      <div class="plan-name">Sesión suelta</div>
-      <div class="plan-price">$800 <span>MXN</span></div>
-      <div class="plan-per">por sesión única · 2 hrs</div>
-      <ul class="plan-features">
-        <li>Sin compromiso de continuidad</li>
-        <li>Revisión o corrección puntual</li>
-        <li>Feedback directo en archivo</li>
-      </ul>
-    </div>
-    <div class="plan featured">
-      <div class="plan-badge">Más elegido</div>
-      <div class="plan-name">Plan quincenal</div>
-      <div class="plan-price">$1,600 <span>MXN</span></div>
-      <div class="plan-per">por mes · 2 sesiones de 2 hrs</div>
-      <ul class="plan-features">
-        <li>$800 por sesión mantenido</li>
-        <li>Seguimiento continuo del progreso</li>
-        <li>Asignación clara entre sesiones</li>
-        <li>Acceso al programa de 6 etapas</li>
-      </ul>
-    </div>
-    <div class="plan">
-      <div class="plan-name">Plan comprometido</div>
-      <div class="plan-price">$2,400 <span>MXN</span></div>
-      <div class="plan-per">por mes · sesiones + revisión offline</div>
-      <ul class="plan-features">
-        <li>2 sesiones quincenales de 2 hrs</li>
-        <li>Revisión de archivos entre sesiones</li>
-        <li>Corrección de STL y errores reales</li>
-        <li>Diagnóstico técnico a profundidad</li>
-      </ul>
+    <p class="hero-pill fade">Modelado digital custom · Monterrey, NL · v2.0</p>
+    <h1 class="hero-h1 fade d1">
+      Tabulador de<br><em>comisiones</em><br>actualizado
+    </h1>
+    <div class="hero-bottom fade d2">
+      <p class="hero-desc">
+        Precios reales, tiempos estimados y condiciones claras. Escultura digital ZBrush especializada en impresión 3D — entrega STL listo para slicer.
+      </p>
+      <div class="hero-badges">
+        <div class="badge-item">
+          <div class="badge-num">6</div>
+          <div class="badge-lbl">Categorías</div>
+        </div>
+        <div class="badge-item">
+          <div class="badge-num">STL</div>
+          <div class="badge-lbl">Entrega digital</div>
+        </div>
+        <div class="badge-item">
+          <div class="badge-num">48h</div>
+          <div class="badge-lbl">Cotización</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="section">
-  <p class="section-label">Cómo funciona</p>
-  <h2 class="section-title">Del formulario a tu primera sesión</h2>
-  <div class="process-grid">
-    <div class="process-item"><div class="process-n">01</div><div class="process-title">Llenas el formulario</div><div class="process-desc">Cuéntame tu nivel actual, qué quieres lograr y qué plan te interesa. Todo queda registrado automáticamente en Google Sheets.</div></div>
-    <div class="process-item"><div class="process-n">02</div><div class="process-title">Te contacto en 24–48 h</div><div class="process-desc">Revisamos tu solicitud y agendamos una llamada breve para confirmar el plan, horarios y comenzar.</div></div>
-    <div class="process-item"><div class="process-n">03</div><div class="process-title">Primera sesión</div><div class="process-desc">Diagnóstico de tu nivel actual, establecemos objetivos claros y arrancamos el programa personalizado.</div></div>
+<!-- SOBRE MÍ -->
+<section class="about-bar">
+  <div class="about-inner">
+    <div class="about-avatar">CM</div>
+    <div class="about-body">
+      <div class="about-name">Christian Méndez</div>
+      <div class="about-role">Artista 3D · Videojuegos, Cine &amp; Publicidad</div>
+      <p class="about-bio">
+        Más de <strong>10 años de experiencia</strong> en escultura digital y modelado 3D para producción profesional.
+        He trabajado en proyectos para videojuegos, cine y publicidad — desde personajes de producción hasta figuras
+        coleccionables listas para impresión. Cada encargo lleva ese criterio técnico de industria aplicado a tu proyecto.
+      </p>
+    </div>
+    <div class="about-stats">
+      <div class="astat"><span class="astat-n">10+</span><span class="astat-l">años experiencia</span></div>
+      <div class="astat"><span class="astat-n">3</span><span class="astat-l">industrias</span></div>
+      <div class="astat"><span class="astat-n">MTY</span><span class="astat-l">basado en NL</span></div>
+    </div>
   </div>
 </section>
 
-<section class="form-section" id="inscripcion">
-  <div class="form-left">
-    <p class="section-label">Inscripción</p>
-    <h2 class="form-title">Reserva<br>tu lugar</h2>
-    <p class="form-desc">Los lugares son limitados para garantizar atención personalizada. Completa el formulario y te confirmo disponibilidad en menos de 48 horas.</p>
-    <div class="what-get">
-      <div class="what-item"><div class="what-icon">◈</div><div class="what-text"><strong>Programa estructurado</strong>6 etapas progresivas, de cero a pieza lista para imprimir</div></div>
-      <div class="what-item"><div class="what-icon">◈</div><div class="what-text"><strong>Corrección real en archivo</strong>No teoría — trabajamos directo sobre tu modelo</div></div>
-      <div class="what-item"><div class="what-icon">◈</div><div class="what-text"><strong>Enfoque en fabricación</strong>Aprendes a esculpir para que funcione, no solo para que se vea bien</div></div>
-      <div class="what-item"><div class="what-icon">◈</div><div class="what-text"><strong>Evitas errores costosos</strong>Wall thickness, soportes, ángulos — cubiertos desde el inicio</div></div>
+<!-- ALERTA IMPORTANTE -->
+<div class="alert-bar">
+  <span class="icon">⚠</span>
+  <p><strong>Importante:</strong> Todos los precios aplican exclusivamente al <strong>archivo digital STL</strong> listo para impresión. No incluyen impresión física, resina, filamento, acabados ni envío. Si necesitas impresión física, se cotiza por separado.</p>
+</div>
+
+<!-- RANGOS DE ENTRADA -->
+<section class="section" id="tabulador">
+  <p class="sec-eyebrow">¿Por dónde empezar?</p>
+  <h2 class="sec-title">Rangos de <em>entrada</em></h2>
+  <div class="rangos">
+    <div class="rango">
+      <div class="rango-tag">Nivel básico</div>
+      <div class="rango-name">Starter</div>
+      <div class="rango-price">desde $3,000</div>
+      <div class="rango-desc">Miniaturas simples, bustos básicos, primeras piezas. Ideal para primer encargo o presupuesto acotado.</div>
+    </div>
+    <div class="rango mid">
+      <div class="rango-tag">Nivel medio · más elegido</div>
+      <div class="rango-name">Premium</div>
+      <div class="rango-price">desde $7,000</div>
+      <div class="rango-desc">Figuras con detalle completo, personajes heroicos, criaturas medianas. Punto ideal entre calidad y presupuesto.</div>
+    </div>
+    <div class="rango top">
+      <div class="rango-tag">Nivel alto</div>
+      <div class="rango-name">Showcase</div>
+      <div class="rango-price">desde $18,000</div>
+      <div class="rango-desc">Piezas de exhibición, dioramas, figuras complejas con base. Máximo nivel de detalle y acabado.</div>
+    </div>
+  </div>
+
+  <!-- 1. FIGURAS Y COLECCIONABLES -->
+  <div class="cat-label">1 — Figuras y Coleccionables</div>
+  <table class="srv-table">
+    <thead><tr>
+      <th>Servicio</th><th class="c">Precio MXN</th><th class="c">Tiempo est.</th><th class="inc inc-h">Incluye</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="name">Busto estilizado sencillo</td><td class="price">$3,500 – $5,500</td><td class="time">5–8 días</td><td class="inc">STL cerrado · 1 revisión</td></tr>
+      <tr><td class="name">Busto detallado</td><td class="price">$5,500 – $8,000</td><td class="time">8–12 días</td><td class="inc">STL cerrado · 2 revisiones</td></tr>
+      <tr><td class="name">Busto premium para pintores</td><td class="price">$8,000 – $12,000</td><td class="time">12–18 días</td><td class="inc">STL · 3 revisiones · separado por secciones</td></tr>
+      <tr><td class="name">Figura sencilla</td><td class="price">$7,000 – $10,000</td><td class="time">10–15 días</td><td class="inc">STL cerrado · 1 revisión</td></tr>
+      <tr><td class="name">Figura estilizada detallada</td><td class="price">$10,000 – $16,000</td><td class="time">15–20 días</td><td class="inc">STL cerrado · 2 revisiones</td></tr>
+      <tr><td class="name">Figura realista / criatura compleja</td><td class="price">$15,000 – $25,000</td><td class="time">20–30 días</td><td class="inc">STL · 3 revisiones · cortes sugeridos</td></tr>
+      <tr><td class="name">Figura + base</td><td class="price">$18,000 – $28,000</td><td class="time">22–32 días</td><td class="inc">STL · 2 revisiones · base incluida</td></tr>
+      <tr><td class="name">Creature showcase</td><td class="price">$22,000 – $35,000</td><td class="time">25–35 días</td><td class="inc">STL · 3 revisiones · separación incluida</td></tr>
+      <tr><td class="name">Diorama sencillo</td><td class="price">$30,000+</td><td class="time">Cotización</td><td class="inc">STL · revisiones a acordar</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 2. MINIATURAS -->
+  <div class="cat-label">2 — Miniaturas Wargaming / D&D</div>
+  <div class="note ok">✓ &nbsp;Precio mínimo por miniatura individual: <strong>$2,500 MXN</strong>. Las miniaturas incluyen optimización de detalle para impresión en resina (32mm–75mm según escala acordada).</div>
+  <table class="srv-table">
+    <thead><tr><th>Servicio</th><th class="c">Precio MXN</th><th class="c">Tiempo est.</th><th class="inc inc-h">Incluye</th></tr></thead>
+    <tbody>
+      <tr><td class="name">Mini simple</td><td class="price">$2,000 – $3,500</td><td class="time">3–5 días</td><td class="inc">STL · escala acordada · 1 revisión</td></tr>
+      <tr><td class="name">Personaje heroico</td><td class="price">$3,500 – $6,000</td><td class="time">5–8 días</td><td class="inc">STL · escala acordada · 2 revisiones</td></tr>
+      <tr><td class="name">Mini premium personalizada</td><td class="price">$6,000 – $8,500</td><td class="time">8–12 días</td><td class="inc">STL · escala acordada · 2 revisiones</td></tr>
+      <tr><td class="name">Criatura pequeña</td><td class="price">$3,000 – $5,000</td><td class="time">4–7 días</td><td class="inc">STL · escala acordada · 1 revisión</td></tr>
+      <tr><td class="name">Monstruo mediano</td><td class="price">$5,000 – $7,500</td><td class="time">7–10 días</td><td class="inc">STL · escala acordada · 2 revisiones</td></tr>
+      <tr><td class="name">Boss / criatura grande</td><td class="price">$7,500 – $12,000</td><td class="time">10–15 días</td><td class="inc">STL · escala acordada · 2 revisiones</td></tr>
+      <tr><td class="name">Escuadra 5 minis</td><td class="price">$10,000 – $16,000</td><td class="time">12–18 días</td><td class="inc">5 STL individuales · 1 revisión c/u</td></tr>
+      <tr><td class="name">Escuadra 10 minis</td><td class="price">$18,000 – $25,000</td><td class="time">18–25 días</td><td class="inc">10 STL individuales · 1 revisión c/u</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 3. WARHAMMER -->
+  <div class="cat-label">3 — Warhammer-Style</div>
+  <table class="srv-table">
+    <thead><tr><th>Servicio</th><th class="c">Precio MXN</th><th class="c">Tiempo est.</th><th class="inc inc-h">Incluye</th></tr></thead>
+    <tbody>
+      <tr><td class="name">Hero Character</td><td class="price">$5,000 – $8,000</td><td class="time">7–10 días</td><td class="inc">STL · 2 revisiones · detalle de armadura</td></tr>
+      <tr><td class="name">Elite Character</td><td class="price">$8,000 – $12,000</td><td class="time">10–14 días</td><td class="inc">STL · 2 revisiones · accesorios incluidos</td></tr>
+      <tr><td class="name">Commander</td><td class="price">$12,000 – $18,000</td><td class="time">14–20 días</td><td class="inc">STL · 3 revisiones · pose dinámica</td></tr>
+      <tr><td class="name">Large Creature</td><td class="price">$15,000 – $25,000</td><td class="time">18–28 días</td><td class="inc">STL · 3 revisiones · separación sugerida</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 4. POKÉMON -->
+  <div class="cat-label">4 — Figuras Tipo Pokémon / Creature</div>
+  <table class="srv-table">
+    <thead><tr><th>Servicio</th><th class="c">Precio MXN</th><th class="c">Tiempo est.</th><th class="inc inc-h">Incluye</th></tr></thead>
+    <tbody>
+      <tr><td class="name">Creature simple</td><td class="price">$3,500 – $5,500</td><td class="time">5–8 días</td><td class="inc">STL cerrado · 1 revisión</td></tr>
+      <tr><td class="name">Creature detallada</td><td class="price">$6,000 – $10,000</td><td class="time">8–14 días</td><td class="inc">STL cerrado · 2 revisiones</td></tr>
+      <tr><td class="name">Legendary-style piece</td><td class="price">$10,000 – $18,000</td><td class="time">14–20 días</td><td class="inc">STL · 3 revisiones · pose dinámica</td></tr>
+      <tr><td class="name">Duo simple</td><td class="price">$12,000 – $18,000</td><td class="time">14–20 días</td><td class="inc">2 STL · base compartida · 2 revisiones</td></tr>
+      <tr><td class="name">Duo dinámico</td><td class="price">$18,000 – $28,000</td><td class="time">20–28 días</td><td class="inc">2 STL · interacción de poses · 3 revisiones</td></tr>
+      <tr><td class="name">Diorama</td><td class="price">$28,000+</td><td class="time">Cotización</td><td class="inc">STL completo · revisiones a acordar</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 5. PATREON -->
+  <div class="cat-label">5 — Producción para Patreon / Tribes</div>
+  <div class="note warn">⚠ &nbsp;Los proyectos de Patreon / Tribes requieren acuerdo de derechos de distribución previo al inicio. Se firma carta de términos antes de arrancar. Precio incluye optimización para impresión en resina.</div>
+  <table class="srv-table">
+    <thead><tr><th>Servicio</th><th class="c">Precio MXN</th><th class="c">Tiempo est.</th><th class="inc inc-h">Incluye</th></tr></thead>
+    <tbody>
+      <tr><td class="name">3 minis (release básico)</td><td class="price">$8,000 – $12,000</td><td class="time">12–18 días</td><td class="inc">3 STL · revisión por pieza · listos para slicer</td></tr>
+      <tr><td class="name">5–6 assets (release estándar)</td><td class="price">$15,000 – $22,000</td><td class="time">18–25 días</td><td class="inc">5–6 STL · revisión por pieza · listos para slicer</td></tr>
+      <tr><td class="name">Premium release</td><td class="price">$25,000 – $35,000</td><td class="time">25–35 días</td><td class="inc">Hasta 8 STL · revisiones incluidas · calidad máxima</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 6. ADICIONALES -->
+  <div class="cat-label">6 — Servicios Adicionales y Técnicos</div>
+  <div class="note info">ℹ &nbsp;Los siguientes servicios se agregan al precio base cuando se requieren por separado. Si el proyecto ya los incluye según la tabla anterior, no se cobran extra.</div>
+  <table class="srv-table">
+    <thead><tr><th>Servicio</th><th class="c">Precio MXN</th><th class="c">Tiempo est.</th><th class="inc inc-h">Detalle</th></tr></thead>
+    <tbody>
+      <tr><td class="name">Separación de piezas para impresión</td><td class="price">$1,500 – $4,000</td><td class="time">1–3 días</td><td class="inc">Cortes estratégicos · llaves de ensamble básicas</td></tr>
+      <tr><td class="name">Keys y ensambles (plugs / pins)</td><td class="price">$1,500 – $3,000</td><td class="time">1–2 días</td><td class="inc">Sistema de encaje · tolerancias calibradas</td></tr>
+      <tr><td class="name">Optimización de soportes para resina</td><td class="price">$2,000 – $4,000</td><td class="time">1–3 días</td><td class="inc">Posicionamiento para resina · reduce post-proceso</td></tr>
+      <tr><td class="name">Diseño de base temática o neutra</td><td class="price">$2,000 – $5,000</td><td class="time">2–4 días</td><td class="inc">Integrada al STL final · estilo acordado</td></tr>
+    </tbody>
+  </table>
+
+  <!-- PRECIOS MÍNIMOS -->
+  <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:400;color:var(--ink2);margin-top:2.5rem;margin-bottom:.3rem">Precios mínimos garantizados</h3>
+  <p style="font-size:12px;color:var(--ink3);margin-bottom:0">Sin importar el nivel de complejidad que se discuta, los siguientes son los pisos de precio por categoría.</p>
+  <div class="min-grid">
+    <div class="min-item"><div class="min-cat">Miniatura individual</div><div class="min-price">$2,500 MXN</div></div>
+    <div class="min-item"><div class="min-cat">Busto (cualquier tipo)</div><div class="min-price">$4,500 MXN</div></div>
+    <div class="min-item"><div class="min-cat">Figura completa</div><div class="min-price">$8,000–$10,000 MXN</div></div>
+    <div class="min-item"><div class="min-cat">Criaturas complejas</div><div class="min-price">$15,000+ MXN</div></div>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section class="section" id="proceso">
+  <p class="sec-eyebrow">Cómo funciona</p>
+  <h2 class="sec-title">Proceso de <em>trabajo</em></h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Solicitud</div>
+      <div class="step-desc">Llenas el formulario con descripción del proyecto y referencia visual</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">Cotización</div>
+      <div class="step-desc">Recibes precio final y tiempo estimado en 24–48 h. Sin compromiso.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Anticipo 50%</div>
+      <div class="step-desc">Se paga el 50% para arrancar el proyecto. Cubre trabajo inicial.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">WIP & revisiones</div>
+      <div class="step-desc">Envío de avances en etapas para revisión y ajustes según incluye tu plan.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">05</div>
+      <div class="step-title">Aprobación</div>
+      <div class="step-desc">Confirmas el modelo final. Se liquida el 50% restante antes de entrega.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">06</div>
+      <div class="step-title">Entrega STL</div>
+      <div class="step-desc">Archivo STL optimizado + renders de referencia (2–4 vistas) listos para slicer.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONDICIONES -->
+<section class="section" id="condiciones">
+  <p class="sec-eyebrow">Términos de trabajo</p>
+  <h2 class="sec-title">Condiciones <em>generales</em></h2>
+  <div class="conds">
+    <div class="cond-item"><span class="cond-icon">💰</span><div class="cond-body"><div class="cond-title">Anticipo y pago</div><div class="cond-text">Se requiere 50% de anticipo para iniciar. El 50% restante se liquida antes de la entrega del STL final. Se aceptan transferencia y tarjeta.</div></div></div>
+    <div class="cond-item"><span class="cond-icon">🔁</span><div class="cond-body"><div class="cond-title">Revisiones adicionales</div><div class="cond-text">Cada categoría incluye un número específico de revisiones. Rondas adicionales tienen un costo de $500–$800 MXN según complejidad.</div></div></div>
+    <div class="cond-item"><span class="cond-icon">📁</span><div class="cond-body"><div class="cond-title">Formato de entrega</div><div class="cond-text">Se entrega archivo STL optimizado para impresión + renders de referencia en 2–4 vistas. Archivo listo para slicer (Lychee, Chitubox, etc.).</div></div></div>
+    <div class="cond-item"><span class="cond-icon">🖨</span><div class="cond-body"><div class="cond-title">Impresión física</div><div class="cond-text">Los precios NO incluyen impresión, resina, filamento ni envío. Si necesitas impresión física además del modelado, se cotiza por separado.</div></div></div>
+    <div class="cond-item"><span class="cond-icon">🖼</span><div class="cond-body"><div class="cond-title">Referencias visuales</div><div class="cond-text">El cliente debe proveer referencias visuales claras al inicio. Sin referencia, puede haber cargos adicionales por concepto y definición del diseño.</div></div></div>
+    <div class="cond-item"><span class="cond-icon">⚖</span><div class="cond-body"><div class="cond-title">Derechos de uso</div><div class="cond-text">El cliente recibe derechos de uso personal del STL. Uso comercial o distribución (Patreon, venta) requiere acuerdo adicional firmado previo al inicio.</div></div></div>
+    <div class="cond-item"><span class="cond-icon">📐</span><div class="cond-body"><div class="cond-title">Escala y proporciones</div><div class="cond-text">Siempre se confirma la escala antes de iniciar. Cambios de escala después del WIP aprobado generan costo adicional.</div></div></div>
+    <div class="cond-item"><span class="cond-icon">🚫</span><div class="cond-body"><div class="cond-title">Cancelaciones</div><div class="cond-text">Proyectos cancelados después del primer WIP aprobado no son reembolsables. El anticipo cubre el trabajo ya realizado hasta ese punto.</div></div></div>
+  </div>
+</section>
+
+<!-- FORMULARIO -->
+<section class="form-wrap" id="cotizar">
+  <div>
+    <p class="sec-eyebrow">Contacto</p>
+    <h2 class="form-left-title">Solicita tu<br><em>cotización</em></h2>
+    <p class="form-left-desc">Cuéntame qué tienes en mente. Entre más detalle des, más precisa será la cotización. Te respondo en menos de 48 horas con precio y tiempo estimado.</p>
+    <div class="checklist">
+      <div class="check-item"><div class="check-icon">◈</div><div class="check-text"><strong>Sin costo ni compromiso</strong>La cotización es gratuita. Decides si procedes después de verla.</div></div>
+      <div class="check-item"><div class="check-icon">◈</div><div class="check-text"><strong>Precio claro desde el inicio</strong>El precio final se confirma antes de que pagues cualquier cosa.</div></div>
+      <div class="check-item"><div class="check-icon">◈</div><div class="check-text"><strong>WIPs en cada etapa</strong>Ves el avance antes de aprobarlo. Sin sorpresas al final.</div></div>
+      <div class="check-item"><div class="check-icon">◈</div><div class="check-text"><strong>STL listo para tu slicer</strong>Archivo optimizado para resina o FDM — lo que uses.</div></div>
+      <div class="check-item"><div class="check-icon">◈</div><div class="check-text"><strong>Comunicación en español</strong>Atención directa, sin intermediarios, desde Monterrey.</div></div>
     </div>
   </div>
 
   <div class="form-box">
-    <h3>Solicitud de inscripción</h3>
-    <p class="form-sub">Sin costo ni compromiso al enviar · respuesta en 24–48 h</p>
+    <h3>Solicitud de cotización</h3>
+    <p class="form-sub">Sin costo · Sin compromiso · Respuesta en 24–48 h</p>
 
     <form id="regForm">
       <div class="field-row">
-        <div class="field">
-          <label>Nombre</label>
-          <input type="text" id="f-nombre" placeholder="Tu nombre" required>
-        </div>
-        <div class="field">
-          <label>WhatsApp</label>
-          <input type="tel" id="f-whatsapp" placeholder="+52 81 0000 0000" required>
-        </div>
+        <div class="field"><label>Nombre</label><input type="text" id="f-nombre" placeholder="Tu nombre" required></div>
+        <div class="field"><label>WhatsApp</label><input type="tel" id="f-whatsapp" placeholder="+52 81 0000 0000" required></div>
       </div>
+      <div class="field"><label>Correo electrónico</label><input type="email" id="f-correo" placeholder="tu@correo.com" required></div>
       <div class="field">
-        <label>Correo electrónico</label>
-        <input type="email" id="f-correo" placeholder="tu@correo.com" required>
-      </div>
-      <div class="field">
-        <label>¿Qué plan te interesa?</label>
-        <select id="f-plan" required>
-          <option value="" disabled selected>Selecciona un plan</option>
-          <option>Sesión suelta — $800 MXN</option>
-          <option>Plan quincenal — $1,600/mes</option>
-          <option>Plan comprometido — $2,400/mes</option>
+        <label>Tipo de proyecto</label>
+        <select id="f-tipo" required>
+          <option value="" disabled selected>Selecciona categoría</option>
+          <option>Busto coleccionable</option>
+          <option>Figura completa</option>
+          <option>Miniatura Wargaming / D&D</option>
+          <option>Warhammer-Style</option>
+          <option>Figura tipo Pokémon / Creature</option>
+          <option>Producción para Patreon / Tribes</option>
+          <option>Servicio adicional (separación, keys, soportes, base)</option>
+          <option>Otro / no sé bien aún</option>
         </select>
       </div>
       <div class="field">
-        <label>Nivel actual en ZBrush</label>
-        <select id="f-nivel" required>
-          <option value="" disabled selected>Selecciona tu nivel</option>
-          <option>Sin experiencia, partiendo de cero</option>
-          <option>Principiante — conozco la interfaz básica</option>
-          <option>Intermedio — he hecho modelos pero sin resultados para imprimir</option>
-          <option>Avanzado — busco optimizar para fabricación</option>
+        <label>Rango de presupuesto</label>
+        <select id="f-presupuesto" required>
+          <option value="" disabled selected>Selecciona rango</option>
+          <option>Starter — desde $3,000 MXN</option>
+          <option>Premium — desde $7,000 MXN</option>
+          <option>Showcase — desde $18,000 MXN</option>
+          <option>No sé, quiero cotización primero</option>
         </select>
       </div>
       <div class="field">
-        <label>¿Qué quieres lograr?</label>
-        <textarea id="f-objetivo" placeholder="Figuras coleccionables, piezas para venta, prototipos, hobby..."></textarea>
-      </div>
-      <div class="field">
-        <label>¿Tienes impresora 3D?</label>
-        <select id="f-impresora">
+        <label>¿Tienes referencia visual?</label>
+        <select id="f-referencia">
           <option value="" disabled selected>Selecciona</option>
-          <option>Sí, de resina</option>
-          <option>Sí, FDM (filamento)</option>
-          <option>Sí, ambas</option>
-          <option>No, mando a imprimir</option>
-          <option>Todavía no tengo</option>
+          <option>Sí, tengo imágenes de referencia</option>
+          <option>Sí, tengo diseño propio (boceto o arte)</option>
+          <option>No, necesito asesoría de concepto</option>
         </select>
       </div>
-      <button type="submit" class="submit-btn" id="submitBtn">Enviar solicitud →</button>
-      <div class="error-msg" id="errorMsg">Hubo un problema al enviar. Intenta de nuevo o escríbeme directo por WhatsApp.</div>
+      <div class="field">
+        <label>¿Para qué lo usarás?</label>
+        <select id="f-uso">
+          <option value="" disabled selected>Selecciona</option>
+          <option>Colección personal / hobby</option>
+          <option>Regalo personalizado</option>
+          <option>Venta o distribución (requiere acuerdo)</option>
+          <option>Patreon / Tribes (requiere acuerdo)</option>
+          <option>Prototipo o producción en serie</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Descripción del proyecto</label>
+        <textarea id="f-descripcion" placeholder="Cuéntame qué quieres: personaje, estilo, tamaño aproximado, escala si la sabes, detalles importantes..."></textarea>
+      </div>
+      <button type="submit" class="submit-btn" id="submitBtn">Enviar solicitud de cotización →</button>
+      <div class="error-msg" id="errorMsg">Hubo un problema al enviar. Intenta de nuevo o escríbeme por WhatsApp.</div>
     </form>
 
     <div class="success-msg" id="successMsg">
-      <div class="check">✓</div>
+      <div class="success-check">✓</div>
       <h3>¡Solicitud recibida!</h3>
-      <p>Te contactaré en menos de 48 horas para confirmar tu lugar y coordinar la primera sesión. Revisa tu correo y WhatsApp.</p>
+      <p>Revisaré tu proyecto y te enviaré la cotización en menos de 48 horas a tu correo y WhatsApp. Si tienes imágenes de referencia, puedes enviarlas directamente por WhatsApp.</p>
     </div>
 
-    <p class="form-footer">Tus datos se usan únicamente para contactarte.<br>Sin spam, sin listas de correo.</p>
+    <p class="form-privacy">Tus datos se usan únicamente para contactarte.<br>Sin spam · Sin listas de correo.</p>
   </div>
 </section>
 
 <footer>
-  <p>Mentoría — Escultura Digital para Impresión 3D</p>
-  <p>Monterrey, MX · Sesiones en Discord / zoom </p>
+  <p>Escultura Digital para Impresión 3D · Monterrey, NL · Tarifas en MXN · v2.0 2025</p>
+  <div style="display:flex;gap:1.5rem">
+    <a href="inscripcion_mentoria.html">¿Quieres aprender? → Mentoría</a>
+    <a href="servicios_modelado.html">Ver versión anterior</a>
+  </div>
 </footer>
 
 <script>
-  // ══════════════════════════════════════════════════
-  // REEMPLAZA ESTA URL con la de tu Apps Script
-  // (la obtienes en Paso 3 de las instrucciones)
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbye3Hn-YBUaRE1ICF9JfnGE8mruTO2tfVGrtMIE11iUK5isnFzAT8cPiaFQYQ_nodhs/exec";
-  // ══════════════════════════════════════════════════
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbye3Hn-YBUaRE1ICF9JfnGE8mruTO2tfVGrtMIE11iUK5isnFzAT8cPiaFQYQ_nodhs/exec";
 
-  document.getElementById('regForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+document.getElementById('regForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const err = document.getElementById('errorMsg');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  err.style.display = 'none';
 
-    const btn = document.getElementById('submitBtn');
-    const errorMsg = document.getElementById('errorMsg');
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
-    errorMsg.style.display = 'none';
+  const payload = {
+    nombre:    document.getElementById('f-nombre').value,
+    whatsapp:  document.getElementById('f-whatsapp').value,
+    correo:    document.getElementById('f-correo').value,
+    plan:      document.getElementById('f-tipo').value,
+    nivel:     document.getElementById('f-presupuesto').value,
+    objetivo:  document.getElementById('f-descripcion').value,
+    impresora: [
+      document.getElementById('f-referencia').value,
+      document.getElementById('f-uso').value
+    ].filter(Boolean).join(' · '),
+  };
 
-    const payload = {
-      nombre:    document.getElementById('f-nombre').value,
-      whatsapp:  document.getElementById('f-whatsapp').value,
-      correo:    document.getElementById('f-correo').value,
-      plan:      document.getElementById('f-plan').value,
-      nivel:     document.getElementById('f-nivel').value,
-      objetivo:  document.getElementById('f-objetivo').value,
-      impresora: document.getElementById('f-impresora').value,
-    };
-
-    try {
-      const res = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      });
-      const data = await res.json();
-
-      if (data.result === 'ok') {
-        document.getElementById('regForm').style.display = 'none';
-        document.getElementById('successMsg').style.display = 'block';
-      } else {
-        throw new Error(data.error);
-      }
-    } catch (err) {
-      btn.disabled = false;
-      btn.textContent = 'Enviar solicitud →';
-      errorMsg.style.display = 'block';
-      console.error(err);
-    }
-  });
+  try {
+    const res  = await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
+    const data = await res.json();
+    if (data.result === 'ok') {
+      document.getElementById('regForm').style.display = 'none';
+      document.getElementById('successMsg').style.display = 'block';
+    } else { throw new Error(data.error); }
+  } catch(ex) {
+    btn.disabled = false;
+    btn.textContent = 'Enviar solicitud de cotización →';
+    err.style.display = 'block';
+  }
+});
 </script>
 </body>
 </html>
